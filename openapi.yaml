@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Attonartus API
+  title: Attornatus API
   description: API desenvolvida para processo seletivo da Attornatus
   version: 0.0.1
 servers:
