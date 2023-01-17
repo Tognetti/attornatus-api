@@ -1,0 +1,177 @@
+openapi: 3.0.0
+info:
+  title: Attonartus API
+  description: API desenvolvida para processo seletivo da Attornatus
+  version: 0.0.1
+servers:
+  - url: https://attornatus-api.up.railway.app
+tags:
+  - name: Pessoa
+  - name: Endereço
+    
+paths:
+
+  /pessoas:
+    get:
+      tags:
+        - Pessoa
+      summary: Retorna todas as pessoas cadastradas
+      responses:
+        '200':
+          description: Lista das pessoas cadastradas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pessoa'
+    post:
+      tags:
+        - Pessoa
+      summary: Cadastra uma pessoa
+      responses:
+        '200':
+          description: Pessoa cadastrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pessoa'
+          
+  /pessoas/{id}:
+    get:
+      tags:
+        - Pessoa
+      summary: Retorna uma pessoa de acordo com o ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: number
+            minimum: 1
+          description: ID da pessoa
+      responses:
+        '200':
+          description: Pessoa encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pessoa'
+        '404':
+          description: Não foi encontrado nenhuma pessoa cadastrada com o ID especificado
+
+    put:
+      tags:
+        - Pessoa
+      summary: Altera uma pessoa de acordo com o ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: number
+            minimum: 1
+          description: ID da pessoa
+      responses:
+        '200':
+          description: Pessoa alterada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pessoa'
+        '404':
+          description: Não foi encontrado nenhuma pessoa cadastrada com o ID especificado
+    delete:
+      tags:
+        - Pessoa
+      summary: Deleta uma pessoa de acordo com o ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: number
+            minimum: 1
+          description: ID da pessoa
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Não foi encontrado nenhuma pessoa cadastrada com o ID especificado
+        
+  /pessoas/{id}/enderecos:
+    get:
+      tags:
+        - Endereço
+      summary: Retorna todos os endereços de uma pessoa
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: number
+            minimum: 1
+          description: ID da pessoa
+      responses:
+        '200':
+          description: Lista dos endereços da pessoa especificada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Endereco'
+        '404':
+          description: Não foi encontrado nenhuma pessoa cadastrada com o ID especificado
+    post:
+      tags:
+        - Endereço
+      summary: Cria um endereço para uma pessoa
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: number
+            minimum: 1
+          description: ID da pessoa
+      responses:
+        '200':
+          description: Endereço criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endereco'
+        '404':
+          description: Não foi encontrado nenhuma pessoa cadastrada com o ID especificado
+          
+components:
+  schemas:
+    Pessoa:
+      type: object
+      properties:
+        id:
+          type: number
+        nome:
+          type: string
+        dataNascimento:
+          type: string
+        enderecos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Endereco'
+    Endereco:
+      type: object
+      properties:
+        id:
+          type: number
+        logradouro:
+          type: string
+        cep:
+          type: string
+        numero:
+          type: string
+        cidade:
+          type: string
+        principal:
+          type: boolean
