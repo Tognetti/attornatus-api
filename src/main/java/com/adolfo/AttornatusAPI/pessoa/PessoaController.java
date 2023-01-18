@@ -1,18 +1,19 @@
 package com.adolfo.AttornatusAPI.pessoa;
 
 import com.adolfo.AttornatusAPI.endereco.EnderecoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class PessoaController {
-
+    @Autowired
     private final PessoaRepository pessoaRepository;
+    @Autowired
     private final EnderecoRepository enderecoRepository;
 
     public PessoaController(PessoaRepository pessoaRepository, EnderecoRepository enderecoRepository) {
@@ -37,17 +38,19 @@ public class PessoaController {
     @PostMapping("/pessoas")
     Pessoa criaPessoa(@RequestBody Pessoa pessoa) {
         Pessoa newPessoa = pessoaRepository.save(pessoa);
-        pessoa.getEnderecos().forEach(endereco -> {
-            endereco.setPessoa(newPessoa);
-            enderecoRepository.save(endereco);
-        });
+        if (!pessoa.getEnderecos().isEmpty()) {
+            pessoa.getEnderecos().forEach(endereco -> {
+                endereco.setPessoa(newPessoa);
+                enderecoRepository.save(endereco);
+            });
+        }
         return newPessoa;
     }
 
     @PutMapping("/pessoas/{id}")
     ResponseEntity<Pessoa> alteraPessoa(@RequestBody Pessoa newPessoa, @PathVariable Long id) {
         Optional<Pessoa> oldPessoa = pessoaRepository.findById(id);
-        if(oldPessoa.isPresent()){
+        if(oldPessoa.isPresent()) {
             Pessoa pessoa = oldPessoa.get();
             pessoa.setNome(newPessoa.getNome());
             pessoa.setDataNascimento(newPessoa.getDataNascimento());
@@ -76,10 +79,4 @@ public class PessoaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping("/docs")
-    public ModelAndView getDocs() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("docs.html");
-        return modelAndView;
-    }
 }

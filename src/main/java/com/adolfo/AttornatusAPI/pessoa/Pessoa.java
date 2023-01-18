@@ -23,6 +23,21 @@ public class Pessoa {
     @OneToMany(mappedBy="pessoa")
     private List<Endereco> enderecos;
 
+    public Pessoa() {}
+
+    public Pessoa(String nome, LocalDate dataNascimento, List<Endereco> enderecos) {
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.enderecos = enderecos;
+    }
+
+    public Pessoa(Long id, String nome, LocalDate dataNascimento, List<Endereco> enderecos) {
+        this.id = id;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.enderecos = enderecos;
+    }
+
     public Long getId() {
         return id;
     }

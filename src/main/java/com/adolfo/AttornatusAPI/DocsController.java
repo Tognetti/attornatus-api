@@ -1,0 +1,17 @@
+package com.adolfo.AttornatusAPI;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class DocsController {
+
+    @RequestMapping("/docs")
+    public ModelAndView getDocs() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("docs.html");
+        return modelAndView;
+    }
+
+}

@@ -19,6 +19,14 @@ public class Endereco {
     @JsonIgnore
     private Pessoa pessoa;
 
+    public Endereco(String logradouro, String cep, String numero, String cidade, Boolean isPrincipal) {
+        this.logradouro = logradouro;
+        this.cep = cep;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.isPrincipal = isPrincipal;
+    }
+
     public String getLogradouro() {
         return logradouro;
     }
